@@ -1,0 +1,37 @@
+.flask-list {
+  display: flex;
+  flex-direction: row;
+  width: 50vw;
+  border: black solid 1px;
+  /* justify-content: space-around; */
+}
+.flask-list-header {
+  display: flex;
+  flex-direction: row;
+  width: 50vw;
+  border: black solid 1px;
+  justify-content: space-around;
+}
+.column1 {
+  position: absolute;
+  left: 27vw;
+}
+.column2 {
+  position: relative;
+  left: 13vw;
+}
+.column3 {
+  position: absolute;
+  left: 50vw;
+}
+.column4 {
+  position: absolute;
+  left: 60vw;
+}
+.column5 {
+  position: absolute;
+  left: 68vw;
+}
+/* .column-flask {
+  margin: 50px;
+} */

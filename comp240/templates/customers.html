@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="jumbotron">
+    <h1>List of Current Customers</h1>
+</div>
+<div>
+
+    <table class='table table-hover'>
+        <thead class='thead-light'>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+            </tr>
+          </thead>
+        <tbody></tbody>
+        {% for item in customers %}
+        <tr>
+        <td>{{item.cust_id}}</td>
+        <td>{{item.cust_name}}</td>
+        </tr>
+        {% endfor %}
+        
+    </table>
+</div>
+
+
+{% endblock %}

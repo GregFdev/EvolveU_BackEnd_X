@@ -1,0 +1,20 @@
+body {
+	background-image: linear-gradient(to top, #9795f0 0%, #fbc8d4 100%);
+ 	font-family: helvetica;
+}
+
+.people{
+	background: white;
+	border: solid;
+	width: 25%;
+	min-height: 60px;
+    margin: auto;
+    margin-top: 15px;
+	text-align: center;
+	padding: 50px;
+	border-radius: 10px;
+	padding: 10px;
+	/*margin: 20px;*/
+	box-shadow: 10px 10px 15px;
+}
+
