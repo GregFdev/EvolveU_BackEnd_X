@@ -96,7 +96,7 @@ def index():
 def invoices():
     invoices = Invoice.query.all()
     print('invoices are ', invoices)
-    return render_template('invoices.html', invoices = invoices)
+    return render_template('invoices.html', invoices=invoices)
 
 @app.route('/customers', methods=['GET'])
 def customers():
@@ -134,6 +134,10 @@ def thank_you():
    first = request.args.get('first')
    last = request.args.get('last')
    return render_template('thank_you.html', first=first, last=last)
+
+# @app.route('/jsonpage')
+# def jsonpage():
+
 
 @app.errorhandler(404)
 def page_not_found(e):
