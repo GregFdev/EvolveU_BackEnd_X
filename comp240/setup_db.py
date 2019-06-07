@@ -42,7 +42,7 @@ db.session.add_all([Inv1, Inv2, Inv3, Inv4,Inv5,Inv6,Cust1,Cust2,Cust3,Cust4, Li
 # Alternative for individual additions:
 # db.session.add(sam)
 # db.session.add(frank)
-
+ 
 # Now save it to the database
 db.session.commit()
 
