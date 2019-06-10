@@ -122,7 +122,12 @@ def invoice_details():
     total = 0
     for line in lines:
         print('line is' ,line)
-        total += line.qty*products[line.prod_id].prod_cost
+        print('line.prod_id is ',line.prod_id,' ')
+        try:
+            total += line.qty*products[line.prod_id - 1].prod_cost
+        except:
+            print('error')
+
     return render_template('invoice_details.html', invoice=invoice, products=products, customer=customer, lines=lines, total=total)
 
 @app.route('/register', methods=['GET'])

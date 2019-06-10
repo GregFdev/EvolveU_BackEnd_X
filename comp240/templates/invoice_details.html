@@ -34,11 +34,11 @@
         <tbody>
             {% for line in lines %}
             <tr>
-            <td>{{products[line.prod_id].prod_name}}</td>
+            <td>{{products[line.prod_id - 1].prod_name}}</td>
             <td>{{line.prod_id}}</td>
-            <td>{{products[line.prod_id].prod_cost}}</td>
+            <td>{{products[line.prod_id - 1].prod_cost}}</td>
             <td>{{line.qty}}</td>
-            <td>{{line.qty*products[line.prod_id].prod_cost}}</td>
+            <td>{{line.qty*products[line.prod_id - 1].prod_cost}}</td>
             </tr>
             {% endfor %}
 
