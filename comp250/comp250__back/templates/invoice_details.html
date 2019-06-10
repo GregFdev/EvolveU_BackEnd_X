@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="jumbotron">
+    <h1>Invoice Details</h1>
+</div>
+
+<div id='printArea'>
+
+
+    <h3>EvolveU Invoice</h3>
+   
+    <ul class='list-group'>
+            <li>Invoice Number: {{invoice.inv_num}}</li>
+            <li>Invoice Date: {{invoice.inv_date}}</li>
+            <li>Customer Name: {{customer.cust_name}}</li>
+            <li>Customer ID: {{invoice.cust_id}}</li>
+            <br />
+
+    </ul>
+    
+
+    <table class="table table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th>Product Name</th>
+                <th>Product ID</th>
+                <th>Product Cost</th>
+                <th>Quantity</th>
+                <th>Sub Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for line in lines %}
+            <tr>
+            <td>{{products[line.prod_id - 1].prod_name}}</td>
+            <td>{{line.prod_id}}</td>
+            <td>{{products[line.prod_id - 1].prod_cost}}</td>
+            <td>{{line.qty}}</td>
+            <td>{{line.qty*products[line.prod_id - 1].prod_cost}}</td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+        
+        
+    </table>
+
+    <h4>Invoice Total: {{total}}</h4>
+
+</div>
+
+<script>
+    function printDiv(divName) {
+        const printContents = document.getElementById(divName).innerHTML;
+        const originalContents = document.body.innerHTML;
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+    }
+</script>
+
+<button type="button" onclick="printDiv('printArea')" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">Print Invoice</button>
+
+{% endblock %}

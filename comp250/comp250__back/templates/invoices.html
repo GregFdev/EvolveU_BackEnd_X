@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="jumbotron">
+    <h1>List of Invoices</h1>
+</div>
+<div>
+
+    <p class="font-weight-bold">Enter invoice number to show invoice details.</p>
+
+    <form action="{{url_for('invoice_details')}}">
+        <div class="form-group">
+            <label for="inv_num">Invoice number:</label>
+            <input type="text" class="form-control" id="inv_num" name="inv_num" placeholder="Enter invoice number">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+</div>
+<div>
+    <table class="table table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th>Invoice Number</th>
+                <th>Customer Number</th>
+                <th>Date</th>
+            </tr>
+
+        </thead>
+        <tbody>
+            {% for item in invoices %}
+            <tr>
+                <td>{{item.inv_num}}</td>
+                <td>{{item.cust_id}}</td>
+                <td>{{item.inv_date}}</td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+        
+        
+    
+    </table>
+
+</div>
+
+
+{% endblock %}
