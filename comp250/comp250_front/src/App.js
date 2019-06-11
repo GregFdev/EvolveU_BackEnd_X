@@ -10,8 +10,8 @@ class App extends Component {
 		};
 	}
 	componentDidMount() {
-		fetch()
-		console.log('component did mount')
+		response = fetch('/invoices');
+		console.log('response is ', response);
 
 	}
 	onClickEditInvoice = (e) => {
