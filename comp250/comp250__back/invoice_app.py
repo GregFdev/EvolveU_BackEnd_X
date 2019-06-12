@@ -2,7 +2,7 @@
 
 import os
 # from forms import AddInvoice
-from flask import Flask, render_template, url_for, redirect, request, jsonify
+from flask import Flask, render_template, url_for, redirect, request, jsonify, json
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate  
 
@@ -39,8 +39,8 @@ class Invoice(db.Model):
         self.cust_id = cust_id
         self.inv_date = inv_date
 
-    # def print_invoice(self):
-    #     return f'customer name is {self.customer.cust_name}'
+    def json(self):
+        return {'inv_num': self.inv_num, 'date': self.inv_date, 'cust_id': self.cust_id}
 
 
 class Customer(db.Model):
@@ -82,7 +82,11 @@ class Line_Item(db.Model):
         self.qty = qty
 
     
-    
+people = {1:{'fname':'Larry', 'lname':'Shumlich','age':29},
+		  5:{'fname':'Lorraine', 'lname':'Shumlich','age':31},
+		  12:{'fname':'Erin', 'lname':'Shumlich','age':30}
+		 }
+  
 
 ###############################################
 ######  Views from Forms  #####################
@@ -94,11 +98,16 @@ def index():
 
 @app.route('/invoices', methods=['GET'])
 def invoices():
-    invoices = Invoice.query.all()
-    print('invoices are ', invoices)
-    resp = jsonify(invoices)
+
+    resp = jsonify(people)
     print('---json---:', resp.response)
     return resp, 200
+
+    # invoice = Invoice.query.filter_by(inv_num=1).first()
+    # inv_json = invoice.json()
+    # print('invoice 1 is ',inv_json)
+    # # print('json is ', json.dumps(invoices[0]))
+    # return inv_json
 
 
 @app.route('/customers', methods=['GET'])

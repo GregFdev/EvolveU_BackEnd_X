@@ -10,10 +10,16 @@ class App extends Component {
 		};
 	}
 	componentDidMount() {
-		response = fetch('/invoices');
-		console.log('response is ', response);
-
+		fetch('/invoices').then(resp => {
+			// console.log('response is ', resp.text())
+			return resp.json();
+			})
+				.then(inv => {
+					console.log('invoices', inv);
+				
+			});	
 	}
+
 	onClickEditInvoice = (e) => {
 		this.setState({
 			displayInvoice: Number(e.target.id)
