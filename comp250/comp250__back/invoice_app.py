@@ -39,7 +39,7 @@ class Invoice(db.Model):
         self.cust_id = cust_id
         self.inv_date = inv_date
 
-    def json(self):
+    def serialize(self):
         return {'inv_num': self.inv_num, 'date': self.inv_date, 'cust_id': self.cust_id}
 
 
@@ -98,17 +98,18 @@ def index():
 
 @app.route('/invoices', methods=['GET'])
 def invoices():
+    invoices = Invoice.query.all()
+    print('invoices are ', invoices)
+    return render_template('invoices.html', invoices=invoices)
 
-    resp = jsonify(people)
+@app.route('/invoices2', methods=['GET'])
+def invoices2():
+    invoices2 = Invoice.query.all()
+    inv_ser_list = [inv.serialize() for inv in invoices2]
+    print('ser inv list is ', inv_ser_list)
+    resp = jsonify(inv_ser_list)
     print('---json---:', resp.response)
     return resp, 200
-
-    # invoice = Invoice.query.filter_by(inv_num=1).first()
-    # inv_json = invoice.json()
-    # print('invoice 1 is ',inv_json)
-    # # print('json is ', json.dumps(invoices[0]))
-    # return inv_json
-
 
 @app.route('/customers', methods=['GET'])
 def customers():

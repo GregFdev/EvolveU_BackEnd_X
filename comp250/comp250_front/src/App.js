@@ -5,43 +5,40 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			line_list: {},
+			line_list: [],
 			displayInvoice: 0
 		};
 	}
 	componentDidMount() {
-		fetch('/invoices').then(resp => {
-			// console.log('response is ', resp.text())
-			return resp.json();
-			})
-				.then(inv => {
-					console.log('invoices', inv);
-				
-			});	
-	}
+		console.log('did mount');
+		fetch('/invoices2')
+			.then(resp => resp.json())
+			.then(json => this.setState({line_list: json}))
+	};
 
 	onClickEditInvoice = (e) => {
-		this.setState({
-			displayInvoice: Number(e.target.id)
-			})};
+		console.log('button pressed and line list is ', this.state.line_list);
+		// this.setState({
+		// 	displayInvoice: Number(e.target.id)
+			// })
+		};
 
 	render () {
 
-		// const lineList = this.communityCtrl.cityArray.map((city) => {
+		const lineList = this.state.line_list.map(line => {
 
-		// 	return(
-		// 		<tr key={city.cityID}>
-		// 			<td>{city.cityName}</td>
-		// 			<td>{city.cityLat}</td>
-		// 			<td>{city.cityLong}</td>
-		// 			<td>{city.cityPop}</td>
-		// 			<td colSpan='2'>
-		// 				<button id={city.cityID} onClick={this.onClickEditCity}>Edit</button>
-		// 				<button id={city.cityID} onClick={this.onClickDeleteCity}>Delete</button>
-		// 			</td>
-		// 		</tr>
-		// 	)
-		// });
+			return (
+				<tr key={line.inv_num}>
+					<td>{line.inv_num}</td>
+					<td>{line.date}</td>
+					<td>{line.cust_id}</td>
+					
+					<td>
+						<button>Invoice Details</button>
+					</td>
+				</tr>
+			)
+		});
 
 		return(
 
@@ -59,25 +56,19 @@ class App extends Component {
 
 						<h2>Invoice Table</h2>
 						
-
 						<table className='cityTable'>
 							
 							<thead>
 								<tr>
 									<th>Invoice Number</th>
-									<th>Date</th>
-									<th>Customer</th>
-									<th>
-										<button onClick={this.onClickEditInvoice}>Display Invoice</button>
-									</th>
+									<th>Invoice Date</th>
+									<th>Customer ID</th>
+									<th></th>
 									
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>Line list here</td>
-								</tr>
-
+								{lineList}
 							</tbody>
 							
 						</table>
