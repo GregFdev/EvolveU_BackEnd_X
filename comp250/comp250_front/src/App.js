@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import InvComp from './components/InvComp';
 import './style_community.css';
 
 class App extends Component {
@@ -17,10 +18,10 @@ class App extends Component {
 	};
 
 	onClickEditInvoice = (e) => {
-		console.log('button pressed and line list is ', this.state.line_list);
-		// this.setState({
-		// 	displayInvoice: Number(e.target.id)
-			// })
+		console.log('button pressed and inv num is  ', e.target.id);
+		this.setState({
+			displayInvoice: Number(e.target.id)
+			})
 		};
 
 	render () {
@@ -34,7 +35,7 @@ class App extends Component {
 					<td>{line.cust_id}</td>
 					
 					<td>
-						<button>Invoice Details</button>
+						<button id={line.inv_num} onClick={this.onClickEditInvoice}>Invoice Details</button>
 					</td>
 				</tr>
 			)
@@ -74,18 +75,19 @@ class App extends Component {
 						</table>
 
 					</div>
+					<div>
+						{this.state.displayInvoice === 0 ? '': 
+							<InvComp
+								key={this.state.displayInvoice}
+								inv_num={this.state.displayInvoice}
+								onSubmitClose={this.onSubmitClose}
 
+							/>
+						}
+
+					</div>
 											
-					{/* {this.state.displayCityID === 0 ? '': 
-                		<CityDetailsComp
-                			key={this.state.displayCityID}
-                			cityObj={currCityObj}
-	               			reRender={this.reRender} 
-	               			whichSphere={this.whichSphere}
-	               			onSubmitClose={this.onSubmitClose}
-
-            			/>
-        			} */}
+					
 
 					
 
