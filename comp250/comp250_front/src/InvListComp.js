@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import InvComp from './components/InvComp';
-import InvListComp from './InvListComp'
 import './style_community.css';
 
-class App extends Component {
+class InvListComp extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			line_list: [],
 			displayInvoice: 0
 		};
 	}
@@ -101,4 +100,4 @@ class App extends Component {
 }
 
 
-export default App;
+export default InvListComp;

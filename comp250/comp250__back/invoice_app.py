@@ -51,7 +51,6 @@ class Customer(db.Model):
 
     def __init__(self, cust_name):
         self.cust_name = cust_name
-        self.cust_id = cust_id
         
     def serialize(self):
         return {'cust_id': self.cust_id, 'cust_name': self.cust_name}
@@ -126,31 +125,30 @@ def invoices2():
 
 @app.route('/invoice_details/<inv_num>', methods=['GET'])
 def invoice_details(inv_num=None):
-    print('route started')
     lines = Line_Item.query.filter_by(inv_num=inv_num).all()
-    print(f'lines are v4 {lines}')
-    invoice = Invoice.query.filter_by(inv_num=inv_num).first().serialize()
-    print('invoice is ', invoice)
+    # print(f'lines are v4 {lines}')
+    invoice = Invoice.query.filter_by(inv_num=inv_num).first()
+    # print('invoice cust id is ', invoice.cust_id)
 
-    customer = Customer.query.filter_by(cust_id=invoice.cust_id).first().serialize()
-    print('cust ', customer)
+    customer = Customer.query.filter_by(cust_id=invoice.cust_id).first()
+    # print('cust ', customer)
     total = 0
     products = []
     for line in lines:
-        print('line is' ,line)
-        print('line.prod_id is ',line.prod_id,' ')
-        currprod = Product.query.filter_by(prod_id=line.prod_id).first().serialize()
+        # print('line is' ,line)
+        # print('line.prod_id is ',line.prod_id,' ')
+        currprodobj = Product.query.filter_by(prod_id=line.prod_id).first()
+        total += line.qty*currprodobj.prod_cost
+        currprod = currprodobj.serialize()
         currprod['qty'] = line.qty
-        print('curr prod is ', currprod)
+        # print('curr prod is ', currprod)
         products.append(currprod)
-        # try:
-        #     total += line.qty*products[line.prod_id - 1].prod_cost
-        # except:
-            # print('error')
-    
-    resp = jsonify(invoice.serialize())
-    print('products in invoice are ', products)
-    print('---json---:', resp.response)
+        
+    inv_json = {'Invoice': invoice.serialize(), 'Customer': customer.serialize(), 'Products': products, 'TotalCost': total}
+    # print('inv json is ', inv_json)
+    resp = jsonify(inv_json)
+    # print('products in invoice are ', products)
+    # print('---json---:', resp.response)
     return resp, 200
 
 # @app.route('/register', methods=['GET'])

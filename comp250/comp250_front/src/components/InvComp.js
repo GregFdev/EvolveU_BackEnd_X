@@ -7,22 +7,28 @@ class InvComp extends Component {
         this.inv_num = this.props.inv_num;
         
 		this.state = {
-			line_list: [],
+			inv_details: [],
 			displayInvoice: 0
         };
         
     }
     componentDidMount() {
-		console.log('invoice did mount');
-		fetch('/invoices2')
+        console.log('invoice did mount');
+        let urlstring = '/invoice_details/' + String(this.inv_num);
+        console.log(urlstring);
+        fetch(urlstring)
+            .then(console.log('invnum is ', this.inv_num))
 			.then(resp => resp.json())
-			.then(json => this.setState({line_list: json}))
+			.then(json => {
+                this.setState({inv_details: json});
+                console.log('details', json);
+            })
     };
     
     render() {
         return(
             <div>
-                Hello World
+                hello
             </div>
         )
     };
