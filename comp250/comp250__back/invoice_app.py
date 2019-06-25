@@ -49,11 +49,13 @@ class Customer(db.Model):
     cust_id = db.Column(db.Integer, primary_key=True)
     cust_name = db.Column(db.Text)
 
-    # invoice = db.relationship('Invoice',backref='customers',lazy='dynamic')
-
     def __init__(self, cust_name):
         self.cust_name = cust_name
-       
+        self.cust_id = cust_id
+        
+    def serialize(self):
+        return {'cust_id': self.cust_id, 'cust_name': self.cust_name}
+
 class Product(db.Model):
     __tablename__ = "Products"
 
@@ -64,9 +66,12 @@ class Product(db.Model):
     # inv_num = db.Column(db.Integer,db.ForeignKey('Invoices.inv_num'))
 
     def __init__(self, prod_name, prod_cost):
+        self.prod_id = prod_id
         self.prod_name = prod_name
         self.prod_cost = prod_cost
 
+    def serialize(self):
+        return {'prod_id': self.prod_id, 'prod_name': self.prod_name, 'prod_cost': self.prod_cost}
 
 class Line_Item(db.Model):
     __tablename__ = "Line_Items"
@@ -81,26 +86,24 @@ class Line_Item(db.Model):
         self.prod_id = prod_id
         self.qty = qty
 
-    
-people = {1:{'fname':'Larry', 'lname':'Shumlich','age':29},
-		  5:{'fname':'Lorraine', 'lname':'Shumlich','age':31},
-		  12:{'fname':'Erin', 'lname':'Shumlich','age':30}
-		 }
-  
+    def serialize(self):
+        return {'prod_id': self.prod_id, 'qty': self.qty, 'inv_num': self.inv_num}
+
+
 
 ###############################################
 ######  Views from Forms  #####################
 ###############################################
 
-@app.route('/')
-def index():
-    return render_template('home.html')
+# @app.route('/')
+# def index():
+#     return render_template('home.html')
 
-@app.route('/invoices', methods=['GET'])
-def invoices():
-    invoices = Invoice.query.all()
-    print('invoices are ', invoices)
-    return render_template('invoices.html', invoices=invoices)
+# @app.route('/invoices', methods=['GET'])
+# def invoices():
+#     invoices = Invoice.query.all()
+#     print('invoices are ', invoices)
+#     return render_template('invoices.html', invoices=invoices)
 
 @app.route('/invoices2', methods=['GET'])
 def invoices2():
@@ -111,55 +114,62 @@ def invoices2():
     print('---json---:', resp.response)
     return resp, 200
 
-@app.route('/customers', methods=['GET'])
-def customers():
-    customers = Customer.query.all()
-    return render_template('customers.html', customers=customers)
+# @app.route('/customers', methods=['GET'])
+# def customers():
+#     customers = Customer.query.all()
+#     return render_template('customers.html', customers=customers)
 
-@app.route('/products', methods=['GET'])
-def products():
-    products = Product.query.all()
-    return render_template('products.html', products=products)
+# @app.route('/products', methods=['GET'])
+# def products():
+#     products = Product.query.all()
+#     return render_template('products.html', products=products)
 
-@app.route('/invoice_details', methods=['GET'])
-def invoice_details():
-    inv_num = request.args.get('inv_num')
-    products = Product.query.all()
-    print(f'products are {products}')
+@app.route('/invoice_details/<inv_num>', methods=['GET'])
+def invoice_details(inv_num=None):
+    print('route started')
     lines = Line_Item.query.filter_by(inv_num=inv_num).all()
     print(f'lines are v4 {lines}')
-    invoice = Invoice.query.filter_by(inv_num=inv_num).first()
-    print('invoice is ', invoice.cust_id)
-    customer = Customer.query.filter_by(cust_id=invoice.cust_id).first()
+    invoice = Invoice.query.filter_by(inv_num=inv_num).first().serialize()
+    print('invoice is ', invoice)
+
+    customer = Customer.query.filter_by(cust_id=invoice.cust_id).first().serialize()
     print('cust ', customer)
     total = 0
+    products = []
     for line in lines:
         print('line is' ,line)
         print('line.prod_id is ',line.prod_id,' ')
-        try:
-            total += line.qty*products[line.prod_id - 1].prod_cost
-        except:
-            print('error')
+        currprod = Product.query.filter_by(prod_id=line.prod_id).first().serialize()
+        currprod['qty'] = line.qty
+        print('curr prod is ', currprod)
+        products.append(currprod)
+        # try:
+        #     total += line.qty*products[line.prod_id - 1].prod_cost
+        # except:
+            # print('error')
+    
+    resp = jsonify(invoice.serialize())
+    print('products in invoice are ', products)
+    print('---json---:', resp.response)
+    return resp, 200
 
-    return render_template('invoice_details.html', invoice=invoice, products=products, customer=customer, lines=lines, total=total)
+# @app.route('/register', methods=['GET'])
+# def register():
+#     return render_template('register.html')
 
-@app.route('/register', methods=['GET'])
-def register():
-    return render_template('register.html')
-
-@app.route('/thank_you')
-def thank_you():
-   first = request.args.get('first')
-   last = request.args.get('last')
-   return render_template('thank_you.html', first=first, last=last)
+# @app.route('/thank_you')
+# def thank_you():
+#    first = request.args.get('first')
+#    last = request.args.get('last')
+#    return render_template('thank_you.html', first=first, last=last)
 
 # @app.route('/jsonpage')
 # def jsonpage():
 
 
-@app.errorhandler(404)
-def page_not_found(e):
-   return render_template('404.html'), 404
+# @app.errorhandler(404)
+# def page_not_found(e):
+#    return render_template('404.html'), 404
 
 if __name__ == '__main__':
     
