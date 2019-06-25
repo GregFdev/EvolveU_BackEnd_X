@@ -16,13 +16,6 @@ class InvListComp extends Component {
 			.then(json => this.setState({line_list: json}))
 	};
 
-	onClickEditInvoice = (e) => {
-		console.log('button pressed and inv num is  ', e.target.id);
-		this.setState({
-			displayInvoice: Number(e.target.id)
-			})
-		};
-
 	render () {
 
 		const lineList = this.state.line_list.map(line => {
@@ -34,7 +27,7 @@ class InvListComp extends Component {
 					<td>{line.cust_id}</td>
 					
 					<td>
-						<button id={line.inv_num} onClick={this.onClickEditInvoice}>Invoice Details</button>
+						<button id={line.inv_num} onClick={this.props.onClickEditInvoice}>Invoice Details</button>
 					</td>
 				</tr>
 			)
@@ -42,54 +35,28 @@ class InvListComp extends Component {
 
 		return(
 
-			<div className='commContainer'>
+			<div className='btmContainer'>
 
-				<div className='topContainer'>
-					<h2>Invoice Information</h2>
-									
+				<div className='leftContainer'>
 
-				</div>
-
-				<div className='btmContainer'>
-
-					<div className='leftContainer'>
-
-						<h2>Invoice Table</h2>
+					<h2>Invoice Table</h2>
+					
+					<table className='cityTable'>
 						
-						<table className='cityTable'>
-							
-							<thead>
-								<tr>
-									<th>Invoice Number</th>
-									<th>Invoice Date</th>
-									<th>Customer ID</th>
-									<th></th>
-									
-								</tr>
-							</thead>
-							<tbody>
-								{lineList}
-							</tbody>
-							
-						</table>
-
-					</div>
-					<div>
-						{this.state.displayInvoice === 0 ? '': 
-							<InvComp
-								key={this.state.displayInvoice}
-								inv_num={this.state.displayInvoice}
-								onSubmitClose={this.onSubmitClose}
-
-							/>
-						}
-
-					</div>
-											
-					
-
-					
-
+						<thead>
+							<tr>
+								<th>Invoice Number</th>
+								<th>Invoice Date</th>
+								<th>Customer ID</th>
+								<th></th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							{lineList}
+						</tbody>
+						
+					</table>
 
 				</div>
 

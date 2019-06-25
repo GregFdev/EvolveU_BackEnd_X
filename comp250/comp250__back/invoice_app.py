@@ -1,7 +1,5 @@
-# invoice_app.py for release party
+# invoice_app.py for comp 250
 
-import os
-# from forms import AddInvoice
 from flask import Flask, render_template, url_for, redirect, request, jsonify, json
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate  
