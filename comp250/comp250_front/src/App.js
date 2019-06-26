@@ -24,6 +24,7 @@ class App extends Component {
 		})
 	}
 	
+	
 
 	render () {
 
@@ -40,6 +41,7 @@ class App extends Component {
 						<InvComp 
 							inv_num={this.state.displayInvoice} 
 							onClickSubmitInvoice={this.onClickSubmitInvoice}
+							
 							/>
 					}
                 </div>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../style_community.css';
 
-class InvComp extends Component {
+class AddProdComp extends Component {
 	constructor(props) {
         super(props);
         this.inv_num = this.props.inv_num;
@@ -67,36 +67,18 @@ class InvComp extends Component {
                             </thead>
                             <tbody>
                                 {prodList}
-                                <tr>
-                                    <td>
-                                        <input></input>
-                                    </td>
-                                    <td>
-                                        <input></input>
-                                    </td>
-                                    <td>
-                                        <input></input>
-                                    </td>
-                                    <td>
-                                        <button onClick={this.onClickAddProduct}>Add Product</button>
-
-                                    </td>
-
-                                </tr>
+                                
                                 <tr>
                                     <td></td>
                                     <td>Total Cost</td>
-                                    <td>{this.state.inv_details.TotalCost}</td>
-                                    <td>
-                                        <button onClick={this.props.onClickSubmitInvoice}>Close / Cancel</button>    
-                                    </td>     
+                                    <td>{this.state.inv_details.TotalCost}</td>       
                                 </tr>
                                 
                             </tbody>
                             
                         </table>
-                       
-                        
+                        <button onClick={this.onClickAddProduct}>Add Product</button>
+                        <button onClick={this.props.onClickSubmitInvoice}>Close Invoice</button>
                     </div>
     
                 </div>
@@ -111,4 +93,4 @@ class InvComp extends Component {
     };
 };
 
-export default InvComp;
+export default AddProdComp;
