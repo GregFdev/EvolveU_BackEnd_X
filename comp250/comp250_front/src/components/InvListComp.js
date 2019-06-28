@@ -1,33 +1,34 @@
 import React, { Component } from 'react';
-import './style_community.css';
+import '../style_community.css';
 
 class InvListComp extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			line_list: [],
 			displayInvoice: 0
 		};
+		
 	}
 	componentDidMount() {
-		console.log('did mount');
-		fetch('/invoices2')
-			.then(resp => resp.json())
-			.then(json => this.setState({line_list: json}))
+		this.props.getInvData()
 	};
 
 	render () {
-
-		const lineList = this.state.line_list.map(line => {
+		console.log('line list is ', this.props.inv_list);
+		const invList = this.props.inv_list.map(inv => {
 
 			return (
-				<tr key={line.inv_num}>
-					<td>{line.inv_num}</td>
-					<td>{line.date}</td>
-					<td>{line.cust_id}</td>
+				<tr key={inv.inv_num}>
+					<td>{inv.inv_num}</td>
+					<td>{inv.date}</td>
+					<td>{inv.cust_id}</td>
 					
 					<td>
-						<button id={line.inv_num} onClick={this.props.onClickEditInvoice}>Invoice Details</button>
+						<button 
+							id={inv.inv_num} 
+							onClick={this.props.onClickEditInvoice}>
+							Invoice Details
+						</button>
 					</td>
 				</tr>
 			)
@@ -53,7 +54,7 @@ class InvListComp extends Component {
 							</tr>
 						</thead>
 						<tbody>
-							{lineList}
+							{invList}
 						</tbody>
 						
 					</table>

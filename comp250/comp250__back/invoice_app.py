@@ -6,7 +6,7 @@ from flask_migrate import Migrate
 
 app = Flask(__name__)
 
-DB_URL = 'postgres+psycopg2://postgres:secret@localhost:5432/invoices'
+DB_URL = 'postgres://postgres:secret@localhost:5432/invoices'
 
 app.config['SECRET_KEY'] = 'invoices'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -24,7 +24,7 @@ class Invoice(db.Model):
     __tablename__ = 'Invoices'
 
     inv_num = db.Column(db.Integer, primary_key=True) # unique and auto created
-    inv_date = db.Column(db.DateTime)
+    inv_date = db.Column(db.Date)
 
     # one - to one relationship between invoice and customer
     # cust_id = db.Column(db.Integer, db.ForeignKey('Customers.cust_name'))
@@ -63,12 +63,12 @@ class Product(db.Model):
     # inv_num = db.Column(db.Integer,db.ForeignKey('Invoices.inv_num'))
 
     def __init__(self, prod_name, prod_cost):
-        self.prod_id = prod_id
         self.prod_name = prod_name
         self.prod_cost = prod_cost
 
     def serialize(self):
         return {'prod_id': self.prod_id, 'prod_name': self.prod_name, 'prod_cost': self.prod_cost}
+
 
 class Line_Item(db.Model):
     __tablename__ = "Line_Items"
@@ -87,7 +87,6 @@ class Line_Item(db.Model):
         return {'prod_id': self.prod_id, 'qty': self.qty, 'inv_num': self.inv_num}
 
 
-
 ###############################################
 ######  Views from Forms  #####################
 ###############################################
@@ -104,8 +103,8 @@ class Line_Item(db.Model):
 
 @app.route('/invoices2', methods=['GET'])
 def invoices2():
-    invoices2 = Invoice.query.all()
-    inv_ser_list = [inv.serialize() for inv in invoices2]
+    invoice_list = Invoice.query.all()
+    inv_ser_list = [inv.serialize() for inv in invoice_list]
     print('ser inv list is ', inv_ser_list)
     resp = jsonify(inv_ser_list)
     print('---json---:', resp.response)
@@ -116,10 +115,16 @@ def invoices2():
 #     customers = Customer.query.all()
 #     return render_template('customers.html', customers=customers)
 
-# @app.route('/products', methods=['GET'])
-# def products():
-#     products = Product.query.all()
-#     return render_template('products.html', products=products)
+@app.route('/products', methods=['GET'])
+def products():
+    prod_list = Product.query.all()
+    resp = jsonify([prod.serialize() for prod in prod_list])
+    return resp, 200
+
+@app.route('/addproduct', methods=['POST'])
+def add_product():
+    new_prod = Product(prod_name, prod_cost)
+
 
 @app.route('/invoice_details/<inv_num>', methods=['GET'])
 def invoice_details(inv_num=None):

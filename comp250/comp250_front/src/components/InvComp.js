@@ -25,10 +25,9 @@ class InvComp extends Component {
             })
     };
     
-    onClickAddProduct = (e) => {
-		return null
+    
+    
 
-	}
 
     render() {
 
@@ -69,16 +68,16 @@ class InvComp extends Component {
                                 {prodList}
                                 <tr>
                                     <td>
-                                        <input></input>
+                                        <input id="ProdName"></input>
                                     </td>
                                     <td>
-                                        <input></input>
+                                        <input id="ProdCost"></input>
                                     </td>
                                     <td>
-                                        <input></input>
+                                        <input id="ProdQty"></input>
                                     </td>
                                     <td>
-                                        <button onClick={this.onClickAddProduct}>Add Product</button>
+                                        <button onClick={this.props.onClickAddProduct}>Add Product</button>
 
                                     </td>
 
