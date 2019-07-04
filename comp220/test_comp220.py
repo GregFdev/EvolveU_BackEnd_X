@@ -11,6 +11,6 @@ def test_getnumfiles():
 # had to comment out test as it kept changing file sizes
 # def test_getdirsize():
 
-#     assert(comp220exer_2.getdirsize('.')) == 2583965
+    # assert(comp220exer_2.getdirsize('.')) == 2582450
 
 

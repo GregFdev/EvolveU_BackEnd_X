@@ -88,32 +88,17 @@ class Line_Item(db.Model):
 
 
 ###############################################
-######  Views from Forms  #####################
+######  Routings  #####################
 ###############################################
-
-# @app.route('/')
-# def index():
-#     return render_template('home.html')
-
-# @app.route('/invoices', methods=['GET'])
-# def invoices():
-#     invoices = Invoice.query.all()
-#     print('invoices are ', invoices)
-#     return render_template('invoices.html', invoices=invoices)
 
 @app.route('/invoices2', methods=['GET'])
 def invoices2():
     invoice_list = Invoice.query.all()
     inv_ser_list = [inv.serialize() for inv in invoice_list]
-    print('ser inv list is ', inv_ser_list)
+    # print('ser inv list is ', inv_ser_list)
     resp = jsonify(inv_ser_list)
-    print('---json---:', resp.response)
+    # print('---json---:', resp.response)
     return resp, 200
-
-# @app.route('/customers', methods=['GET'])
-# def customers():
-#     customers = Customer.query.all()
-#     return render_template('customers.html', customers=customers)
 
 @app.route('/products', methods=['GET'])
 def products():
@@ -121,13 +106,22 @@ def products():
     resp = jsonify([prod.serialize() for prod in prod_list])
     return resp, 200
 
-@app.route('/addproduct', methods=['POST'])
+@app.route('/addproduct', methods=['POST', 'GET'])
 def add_product():
     content = request.get_json()
-	# print('Update:', request, content)
-    print('About to add product name:', content['newProduct'], 
-    "and invoice ", content['invNum'], 'and customer ', content['custNum'])
-    # new_prod = Product(content.prod_name, content.prod_cost)
+    print('Update:', request, content)
+    print('About to add product name:', content['newProduct']['prod_name'],
+        "and invoice ", content['invNum'], 'and customer ', content['custNum'])
+    new_prod = Product(content['newProduct']['prod_name'], content['newProduct']['prod_cost'])
+
+    # add to dbase
+    db.session.add(new_prod)
+    db.session.commit()
+    
+    new_line = Line_Item(content['invNum'], new_prod.prod_id, content['newProduct']['qty'])
+    print('new line to be added is ', new_line.serialize())
+    db.session.add(new_line)
+    db.session.commit()
     return jsonify({'worked':'ok'}), 200
 
 
@@ -160,23 +154,6 @@ def invoice_details(inv_num=None):
     # print('---json---:', resp.response)
     return resp, 200
 
-# @app.route('/register', methods=['GET'])
-# def register():
-#     return render_template('register.html')
-
-# @app.route('/thank_you')
-# def thank_you():
-#    first = request.args.get('first')
-#    last = request.args.get('last')
-#    return render_template('thank_you.html', first=first, last=last)
-
-# @app.route('/jsonpage')
-# def jsonpage():
-
-
-# @app.errorhandler(404)
-# def page_not_found(e):
-#    return render_template('404.html'), 404
 
 if __name__ == '__main__':
     
