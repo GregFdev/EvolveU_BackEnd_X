@@ -123,7 +123,13 @@ def products():
 
 @app.route('/addproduct', methods=['POST'])
 def add_product():
-    new_prod = Product(prod_name, prod_cost)
+    content = request.get_json()
+	# print('Update:', request, content)
+    print('About to add product name:', content['newProduct'], 
+    "and invoice ", content['invNum'], 'and customer ', content['custNum'])
+    # new_prod = Product(content.prod_name, content.prod_cost)
+    return jsonify({'worked':'ok'}), 200
+
 
 
 @app.route('/invoice_details/<inv_num>', methods=['GET'])

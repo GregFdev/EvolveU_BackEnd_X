@@ -8,6 +8,7 @@ class App extends Component {
 		super(props);
 		this.state = {
 			displayInvoice: 0,
+			inv_details: null,
 			line_list: [],
 			prod_list: [],
 			inv_list: [],
@@ -28,6 +29,10 @@ class App extends Component {
 		})
 	}
 	
+	getInvDetails = (details) => {
+		this.setState({inv_details: details})
+
+	}
 	getInvData = (e) => {
 		fetch('/invoices2')
 			.then(resp => resp.json())
@@ -42,13 +47,39 @@ class App extends Component {
 	}
 
 	onClickAddProduct = (e) => {
-        let nextProdId = this.state.inv_details.Products.length;
-        console.log('current max prod is ', nextProdId)
+        
         let prodName = document.getElementById('ProdName').value;
         let prodCost = document.getElementById('ProdCost').value;
         let prodQty = document.getElementById('ProdQty').value;
         let newProd = {prod_cost: prodCost, prod_name: prodName, qty: prodQty}
-        console.log("product to add is ", newProd)
+		console.log("product to add is ", newProd)
+
+		// POST
+		fetch('/addproduct', {
+
+			// Specify the method
+			method: 'POST',
+
+			// JSON
+			headers: {
+				'Content-Type': 'application/json'
+			},
+
+			// A JSON payload
+			body: JSON.stringify({
+				"newProduct": newProd,
+				"invNum": this.state.displayInvoice,
+				"custNum": this.state.inv_details.Customer.cust_name
+			})
+		}).then(function (response) { // At this point, Flask has printed our JSON
+			return response.text();
+		}).then(function (text) {
+
+			console.log('POST response: ');
+
+			// Should be 'OK' if everything was successful
+			console.log(text);
+		});
     };
 
 	render () {
@@ -68,6 +99,8 @@ class App extends Component {
 							getInvData={this.getInvData} 
 							onClickEditInvoice={this.onClickEditInvoice}/> : 
 						<InvComp
+							inv_details={this.state.inv_details}
+							getInvDetails={this.getInvDetails}
 							getProductData={this.getProductData}
 							onClickAddProduct={this.onClickAddProduct}
 							prod_list={this.state.prod_list}
