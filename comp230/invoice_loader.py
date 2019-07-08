@@ -46,9 +46,6 @@ class Invoice():
         else:
             print('no product or quantity to add')
 
-
-
-
 def check_dupes(ws):
 
     seen = {}

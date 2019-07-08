@@ -1,3 +1,5 @@
+# exercise 1 calc number lines and number of charactersin html file
+
 filename = "./syntax.html"
 
 def numlines():

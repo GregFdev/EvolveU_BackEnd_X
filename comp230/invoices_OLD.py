@@ -7,6 +7,7 @@ inv_ws = wb["invoices"]
 lines_ws = wb["line_items"]
 prod_ws = wb["products"]
 
+print('cust ws is ', cust_ws)
 invnum = int(input('Enter invoice Number to generate invoice: '))
 
 for row in inv_ws.iter_rows(min_row=2, max_col=3, values_only=True):
