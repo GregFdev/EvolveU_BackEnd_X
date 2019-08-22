@@ -138,9 +138,10 @@ def invoice_details(inv_num=None):
     total = 0
     products = []
     for line in lines:
-        # print('line is' ,line)
-        # print('line.prod_id is ',line.prod_id,' ')
+        print('line is' ,line)
+        print('line.prod_id is ',line.prod_id,' ')
         currprodobj = Product.query.filter_by(prod_id=line.prod_id).first()
+        print('currprodobj is ', currprodobj)
         total += line.qty*currprodobj.prod_cost
         currprod = currprodobj.serialize()
         currprod['qty'] = line.qty

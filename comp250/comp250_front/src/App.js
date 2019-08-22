@@ -39,12 +39,13 @@ class App extends Component {
 			.then(invList => this.setState({inv_list: invList}))
 	}
 	
-	getProductData = (e) => {
-		fetch('/products')
-			.then(resp => resp.json())
-			.then(products => this.setState({prod_list: products}))
+	// getProductData = (e) => {
+	// 	console.log("fetching products ");
+	// 	fetch('/products')
+	// 		.then(resp => resp.json())
+	// 		.then(products => this.setState({prod_list: products}))
 		
-	}
+	// }
 
 	onClickAddProduct = (e) => {
         
@@ -80,6 +81,8 @@ class App extends Component {
 			// Should be 'OK' if everything was successful
 			console.log(text);
 		});
+
+		this.getInvDetails();
     };
 
 	render () {
