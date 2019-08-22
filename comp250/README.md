@@ -1,4 +1,6 @@
 EvolveU Comp250 Invoice manager
+Note: this app was built with minimal functionality to meet EvolveU competency requirements.
+Adding products does not show the change immediately in the front end.  Page must be refreshed.
 
 Getting Started
 clone repo from https://github.com/GregFdev/EvolveU_BackEnd_X/tree/master/comp250
